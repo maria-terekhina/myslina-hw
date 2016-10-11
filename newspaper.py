@@ -6,22 +6,59 @@ import html
 #июль 2015 года
 #/obschestvo/palomniki-iz-zelenchukskogo-rajona-pobyvali-v-krymu.html
 
-def write_articles(text, name, refer, topic, autor_name): #make documents with articles
+def writing(f, fl):
+    if not os.path.exists('text-for-mystem'):
+        os.makedirs('text-for-mystem')
+    fw = open('.\\text-for-mystem' + os.sep + fl,'w', encoding = 'UTF-8')
+    fw.write(f)
+    fw.close()
+    #exit(0)
+
+def file_for_mystem():
+    inp = ".\\plain"
+    lst = os.listdir(inp)
+    for fl in lst:
+        f = open(inp+os.sep+fl,'r', encoding = 'UTF-8')
+        fread = f.readlines()
+        f.close()
+        fread = fread[5:]
+        fread = ''.join(fread)
+        writing(fread, fl)
+
+
+
+
+def do_mystem():
+    inp = ".\\text-for-mystem"
+    lst = os.listdir(inp)
+    for fl in lst:
+        os.system("C:\\Users\\Masha\\Documents\\Programming\\mystem.exe " + "-ndi " + inp \
++ os.sep + fl + " C:\\Users\\Masha\\Documents\\Programming\\mystem-plain" + os.sep + fl)
+        fl_xml = fl.replace('.txt', '.xml')
+        os.system(".\\mystem.exe " + "-ndi --format xml " + inp + os.sep + fl + " .\\\
+mystem-xml" + os.sep + fl_xml)
+    exit(0)
+        
+def write_articles(text, name, refer_full, topic, autor_name, file_name): #make documents with articles
     #print (refer, topic, name)
     if not os.path.exists('plain'):
         os.makedirs('plain')
-    file_name = os.getcwd() + '\\' + 'plain\\' + name + '.txt'
+    file_name = os.getcwd() + '\\' + 'plain\\' + file_name + '.txt'
     fw = open(file_name,'w', encoding = 'UTF-8')
-    fw.write('@au '+ autor_name +'\n@ti ' + name + '\n@da Nodata\n@topic ' + topic + '\n@url ' + refer + '\n' + text)
+    fw.write('@au '+ autor_name +'\n@ti ' + name + '\n@da Nodata\n@topic ' + topic + '\n@url ' + refer_full + '\n' + text)
     fw.close()
 
+
 def write_metadata(name, autor_name, url, topic):
-    fw = open('metadata.xml','a', encoding = 'UTF-8')
-    row = '%s\t%s\t\t\t%s\t2015-2016\tпублицистика\t\t\t%s\t\tнейтральный\tн-возраст\tн-уровень\tрайонная\
-    \t%s\tЗеленчукская правда\t\t%s\tгазета\tРоссия\tЗеленчукский район\tru'
-    fw.write(row % ('тут ссылка', autor_name, name, topic, url, '2016'))
+    local_address = os.getcwd()+ '\\plain' + '\\' + name + '.txt'
+    #print(local_address)
+    fw = open('metadata.csv','a', encoding = 'UTF-8')
+    row = '%s\t%s\t\t\t%s\t\tпублицистика\t\t\t%s\t\tнейтральный\tн-возраст\tн-уровень\tрайонная\
+\t%s\tЗеленчукская правда\t\t2015-2016\tгазета\tРоссия\tЗеленчукский район\tru\n'
+    fw.write(row % (local_address, autor_name, name, topic, url))
     #print(row)
     fw.close()
+    
     
     
 def clean(t): #clean text
@@ -88,25 +125,36 @@ def get_topic(refer): #name of the topic by fererenсe
     #print (refer)
     if '/obrazovanie' in refer:
         topic = 'Образование'
+        refer = refer.replace('/obrazovanie/', '')
     elif '/kultura' in refer:
         topic = 'Культура'
+        refer = refer.replace('/kultura/', '')
     elif '/proisshestvija' in refer:
         topic = 'Происшествия'
+        refer = refer.replace('/proisshestvija/', '')
     elif '/obschestvo' in refer:
         topic = 'Общество'
+        refer = refer.replace('/obschestvo/', '')
     elif '/sport' in refer:
         topic = 'Спорт'
+        refer = refer.replace('/sport/', '')
     elif '/vlast' in refer:
         topic = 'Власть'
+        refer = refer.replace('/vlast/', '')
     elif '/religija' in refer:
         topic = 'Религия'
+        refer = refer.replace('/religija/', '')
     elif '/kriminal' in refer:
         topic = 'Криминал'
+        refer = refer.replace('/kriminal/', '')
     elif '/turizm' in refer:
         topic = 'Туризм'
+        refer = refer.replace('/turizm/', '')
     else: print('ALARM!')
 
-    return topic
+    refer = refer.replace('.html', '')
+    return topic, refer
+    
 
 
 
@@ -126,7 +174,8 @@ def get_autor(text): #get author name, if given
 def articles_info(refers): #get information about article
     
     for refer in refers:
-        topic = get_topic(refer)
+        #print(refer)
+        topic, file_name = get_topic(refer)
         refer = 'http://www.zelpravda.ru' + refer
         article = load_page(refer)
         name = name_of_article(article)
@@ -136,7 +185,7 @@ def articles_info(refers): #get information about article
         rawText = res.group(1)
         clean_text = clean(rawText)
         autor_name = get_autor(rawText)
-        write_articles(clean_text, name, refer, topic, autor_name)
+        write_articles(clean_text, name, refer, topic, autor_name, file_name)
         write_metadata(name, autor_name, refer, topic)
     
 
@@ -176,10 +225,13 @@ def load_themes(refers): #get names of themes
 
 
 def main():
+    do_mystem()
+    file_for_mystem()
     url = 'http://www.zelpravda.ru/sitemap.html'
     html = load_page(url)
     refers = get_types(html)    
     load_themes(refers)
+    do_mystem()
     
 
 
