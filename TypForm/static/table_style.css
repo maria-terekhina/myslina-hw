@@ -1,0 +1,35 @@
+table {
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+  font-size: 14px;
+  background: white;
+  max-width: 99%;
+  width: 99%;
+  border-collapse: collapse;
+  text-align: left;
+}
+th {
+  font-weight: bolder;
+  color: #008080;
+  border-bottom: 2px solid #6678b1;
+  padding: 10px 8px;
+}
+td {
+  border-bottom: 1px solid #ccc;
+  color: #2F4F4F;
+  padding: 9px 8px;
+  transition: .3s linear;
+}
+tr:hover td{
+  color: #6699ff;
+}
+.text {
+font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+font-size: 36px;
+text-align:  center;
+color: #008080;
+}
+
+p{
+color: #008080; 
+font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+}

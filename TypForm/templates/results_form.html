@@ -1,13 +1,14 @@
 <html>
 <head>
-<title></title>
-<h1>Результаты поиска</h1>
+<title>Results</title>
+<link rel = "stylesheet" type = "text/css" href = "../static/table_style.css">
+<h1 class = "text">Результаты поиска</h1>
 </head>
 <body>
 {%for key in res:%}
 	<p>{{key}} {{res[key]}}</p>
 {%endfor%}
-<a href="/search">Искать заново</a>
+<p><a href="/search">Искать заново</a></p>
 <p><a href="/done">Вернуться в меню</a></p>
 </body>
 </html> 
