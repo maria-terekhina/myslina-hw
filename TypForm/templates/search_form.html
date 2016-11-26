@@ -1,0 +1,19 @@
+<html>
+<head>
+<title>Поиск</title>
+<h1>Поиск</h1>
+</head>
+<body>
+<p>На этой странице вы можете найти выражение, соответствующее искомому, в другом языке.</p>
+
+<form>
+   <p>Выберите язык  
+   {%for el in Lang:%}
+		<input type="radio" name="language" value={{el}}>{{el}}
+   {% endfor %}
+<p>Введите выражение на русском  <input type = "text" name = "word">
+<input type = "submit" value = "Найти"></p>
+</form>
+<p><a href="/done">Вернуться в меню</a></p>
+</body>
+</html> 

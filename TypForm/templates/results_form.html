@@ -1,0 +1,13 @@
+<html>
+<head>
+<title></title>
+<h1>Результаты поиска</h1>
+</head>
+<body>
+{%for key in res:%}
+	<p>{{key}} {{res[key]}}</p>
+{%endfor%}
+<a href="/search">Искать заново</a>
+<p><a href="/done">Вернуться в меню</a></p>
+</body>
+</html> 

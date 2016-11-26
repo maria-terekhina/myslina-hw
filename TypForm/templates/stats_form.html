@@ -1,0 +1,41 @@
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<ul>
+<p>{{d[0]}}</p>
+<table>
+		<th>Выражение</th>
+		<th>Перевод</th>
+		<th>Части речи</th>
+		<th>Буквальный перевод глагола</th>
+		<th>Пример с буквальным переводом</th>
+{% for line in d[1:] %}
+	{% if not 'Язык' in line and not 'end' in line%}
+			
+			<tr>
+			<td>{{ line[0] }}</th>
+			<td>{{ line[1] }}</th>
+			<td>{{ line[2] }}</th>
+			<td>{{ line[3] }}</th>
+			<td>{{ line[4] }}</th>
+			</tr>
+	
+	{%elif not 'end' in line%}
+		</table>
+		<p>{{line}}</p>
+		<table>
+		<th>Выражение</th>
+		<th>Перевод</th>
+		<th>Части речи</th>
+		<th>Буквальный перевод глагола</th>
+		<th>Пример с буквальным переводом</th>
+
+	{% endif %}
+{% endfor %}
+</table>
+</ul>
+<p><a href="/done">Вернуться в меню</a></p>
+</body>
+</html>
