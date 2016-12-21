@@ -19,7 +19,7 @@ def open_lines(name):
     return arr
             
 def do_mystem():
-    os.system("C:\\Users\\Masha\\Documents\\Programming\\Data_Base\\mystem.exe " + "-ndi " + \
+    os.system("C:\\Users\\Masha\\Documents\\Programming\\Data_Base\\mystem.exe " + "-ni " + \
               "C:\\Users\\Masha\\Documents\\Programming\\Data_Base\\text.txt " +\
               "C:\\Users\\Masha\\Documents\\Programming\\Data_Base\\data.txt")
     
@@ -61,17 +61,24 @@ def do_table(d, name):
     clean = set()
     s = open_file('text.txt')
     raw = s.split()
-
-    for word in raw:
+    i = 1
+    for word in raw:          
         for key in d:
-            t = word.strip(',.-«:*;–!?"»').lower()
-            if d[key][0] == t:
+            
+            if raw[i - 1] != None and raw[i - 1] == '—' or raw[i - 1] == '-':
+                dash = raw[i - 1]
+            else:
+                dash = ''
+
+            t = word.strip(',.-«:*;–!?"»')
+            if d[key][0] == t.lower():
                 res = re.search('^(.*?)'+d[key][0]+'(.*)', word.lower())
                 bef = res.group(1)
                 aft = res.group(2)
                 #clean.add((key, t, bef, aft))
-                writting('Insert into Analyses (analyse_id, word, punct_before, punct_after) values ("' \
-                 + str(key) + '", "' + t + '", "' + bef +'", "' + aft +'");\n', name)
+                writting('Insert into Analyses (analyse_id, word, punct_before, punct_after, in_text) values ("' \
+                 + str(key) + '", "' + t + '", "' + dash + bef +'", "' + aft +'", "'+ str(i)+'");\n', name)
+                i += 1
 
 def main(file_name):
     do_mystem()
