@@ -149,7 +149,7 @@ def main():
     global words
     words = {'веб', 'код', 'программирование',
              'программист', 'разработчик', 'сервер', 'файл'}
-    domain = ['yandex', 'kaspercareer', 'habr']
+    domain = ['yandex', 'kaspercareer', 'habr', 'pirsipy', 'tproger']
     totall = {}
     for dom in domain:
         totall[dom] = get_words(dom)
