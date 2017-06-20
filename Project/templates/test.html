@@ -1,0 +1,63 @@
+<html>
+  <head>
+  <style>
+p{
+	text-align: left;
+	font-family: "Verdana", "Arial";
+	font-size: 12pt;
+	}
+	td.vertical{
+   writing-mode: vertical-lr;
+   filter:flipH flipV;
+   }
+	</style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+<p>На этой странице вы можете посмотреть графики частотности ключевых слов по тематике "программирование"<br>
+для сообществ Яндекс, Kaspersky Lab, Хабрхабр, Типичный программист, /dev/null.<br>
+Ключевыми считались слова "программирование", "код", "программист", "сервер", "веб". Другие ключевые слова были найдены через семнтические вектора.<br>
+За основу была взяла web-модель с сайта http://rusvectores.org. В список ключевых были включены 3 ближайших к каждому из начальных слов.<br>
+Некоторые слова, встречаемость которых константно была равна нулю, были исключены из списка. </p>
+<table>
+{% for dom in itog %}
+	<tr><td class = "vertical"><p>{{dom}}</p></td>
+	{%for i in itog[dom]%}
+		{%for w in i%}
+		<script type="text/javascript">
+			google.charts.load('current', {'packages':['line']});
+			google.charts.setOnLoadCallback(drawChart);
+
+			function drawChart() {
+			var data = google.visualization.arrayToDataTable([
+				['Month', '2016', '2017'],
+				{%for n in i[w]%}
+				['{{n[0]}}', {{n[1]}}, {{n[2]}}],
+				{%endfor%}
+				
+				]);
+
+			var options = {
+				title: '{{w}}',
+				curveType: 'function',
+				legend: { position: 'bottom' }
+				};
+			
+
+			var chart = new google.charts.Line(document.getElementById('{{dom+w}}'));
+
+      chart.draw(data, google.charts.Line.convertOptions(options));
+      }
+    </script>
+	
+	<td>
+    <div id={{dom+w}} style="width: 450px; height: 250px"></div>
+	</td>
+	{% endfor %}
+	{% endfor %}
+	</tr>
+{% endfor %}
+</table>
+  </body>
+</html>
