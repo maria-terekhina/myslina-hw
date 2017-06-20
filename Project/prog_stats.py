@@ -1,8 +1,3 @@
-
-# coding: utf-8
-
-# In[1]:
-
 import requests
 import json
 import re
@@ -11,10 +6,9 @@ from datetime import datetime, date
 from flask import Flask, render_template, request, redirect, url_for
 
 
-# In[47]:
 
 #get_ipython().magic('matplotlib inline')
-app = Flask(__name__)
+flaskapp = Flask(__name__)
 #logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
 
@@ -54,7 +48,7 @@ app = Flask(__name__)
 #         # Увы!
 #             print(word + ' is not present in the model')
 
-# In[48]:
+
 
 def vk_api(method, **kwargs):
     api_request = 'https://api.vk.com/method/'+ method + '?'
@@ -74,7 +68,6 @@ def get_date(date):
     return int(month), int(year)
 
 
-# In[50]:
 
 def get_wall(group_id):
     posts = []
@@ -96,15 +89,12 @@ def get_wall(group_id):
     return posts
 
 
-# In[51]:
 
 def group_id(dom):
     group_info = vk_api('groups.getById', group_id=dom, v='5.63')
     group_id = group_info['response'][0]['id']
     return group_id
 
-
-# In[52]:
 
 def get_words(dom):
     freq = {}
@@ -133,10 +123,6 @@ def get_words(dom):
     return freq
 
 
-
-# In[53]:
-
-
 def for_js(totall):
     itog = {}
     for dom in totall:
@@ -154,30 +140,32 @@ def for_js(totall):
     return itog
 
 
-# In[56]:
-
-@app.route('/', methods=['GET', 'HEAD'])
+@flaskapp.route('/', methods=['GET', 'HEAD'])
 def page():
-    global words
-    words = {'ассемблер', 'браузер', 'веб', 'код', 'кодировка',
-             'программирование', 'программист', 'разработчик', 'сервер', 'тестировщик', 'файл',
-             'хост'}
-    domain = ['kaspercareer', 'pirsipy', 'tproger', 'habr']
-    totall = {}
-    for dom in domain:
-        totall[dom] = get_words(dom)
-    itog = for_js(totall)
     return render_template('test.html', itog = itog)
 
 
-# In[ ]:
+def main():
+    global words
+    words = {'веб', 'код', 'программирование',
+             'программист', 'разработчик', 'сервер', 'файл'}
+    domain = ['yandex', 'kaspercareer', 'habr']
+    totall = {}
+    for dom in domain:
+        totall[dom] = get_words(dom)
+    global itog
+    itog = for_js(totall)
+
+    f = open(r'itog_file.txt', 'w')
+    f.write(json.dumps(itog))
+    f.close()
 
 
-
-
-app.run(debug=True)
-
-
-# In[ ]:
-
-
+if __name__ == '__main__':
+    main()
+    flaskapp.run(debug=True)
+else:
+    f = open(r'itog_file.txt', 'r')
+    global itog
+    itog = json.loads(f.read())
+    f.close()
