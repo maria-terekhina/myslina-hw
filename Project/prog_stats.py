@@ -156,7 +156,7 @@ def main():
     global itog
     itog = for_js(totall)
 
-    f = open(r'itog_file.txt', 'w')
+    f = open(r'itog_file.txt', 'w', encoding = 'utf-8')
     f.write(json.dumps(itog))
     f.close()
 
@@ -165,7 +165,7 @@ if __name__ == '__main__':
     main()
     flaskapp.run(debug=True)
 else:
-    f = open(r'itog_file.txt', 'r')
+    f = open(r'itog_file.txt', 'r', encoding = 'utf-8')
     global itog
     itog = json.loads(f.read())
     f.close()
