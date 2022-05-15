@@ -102,8 +102,7 @@ def results():
 
 @app.route('/search')
 def search():
-    search
-    if request.args:        
+    if request.args:
         global res
         res =  search_answ(request.args)
         
