@@ -95,6 +95,7 @@ def form():
 def not_found():
     return render_template('non_search.html')    
 
+
 @app.route('/results')
 def results():    
     return render_template('results_form.html', res = res)
